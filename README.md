@@ -6,13 +6,13 @@ Might help someone someday :P
 
 1. Open Project Properties from Solution Explorer
 
-2. From topside, click on "Configuration Manager"
+2. From the top menu, click on "Configuration Manager"
 
 3. Click on Win32 which is under Active solution platform
 
 4. Click on \<New\>
 
-Then click ARM and change it to x64. Then close it.
+    Then click ARM and change it to x64. Then close it.
 
 5. Now go to C/C++>General and beside "Additional Include Directories" paste $(OPENCV_DIR)\include
 
