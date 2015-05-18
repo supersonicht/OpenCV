@@ -42,21 +42,4 @@ opencv_ts245.lib
 opencv_video245.lib
 opencv_videostab245.lib
 
-8. Sample Code:
-
-#include "stdafx.h"
-#include "opencv2\highgui\highgui.hpp"
-
-using namespace cv;
-using namespace std;
-
-int main(int argc, _TCHAR* argv[])
-{
-	IplImage* img = cvLoadImage("xyz.jpg");
-	cvNamedWindow("Example1", CV_WINDOW_AUTOSIZE);
-	cvShowImage("Example1", img);
-	cvWaitKey(0);
-	cvReleaseImage(&img);
-	cvDestroyWindow("Example1");
-}
- 
+Sample code can be found in the install_instructions.txt file
