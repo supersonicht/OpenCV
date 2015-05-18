@@ -10,7 +10,7 @@ Might help someone someday :P
 
 3. Click on Win32 which is under Active solution platform
 
-4. Click on <New>
+4. Click on \<New\>
 
 Then click ARM and change it to x64. Then close it.
 
@@ -22,7 +22,7 @@ Then click ARM and change it to x64. Then close it.
 
 paste these under Additional Dependencies
 
-opencv_calib3d245.lib
+opencv_calib3d245.lib\n
 opencv_contrib245.lib
 opencv_core245.lib
 opencv_features2d245.lib
