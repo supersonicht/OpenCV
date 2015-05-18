@@ -22,7 +22,7 @@ Then click ARM and change it to x64. Then close it.
 
 paste these under Additional Dependencies
 
-opencv_calib3d245.lib\n
+opencv_calib3d245.lib
 opencv_contrib245.lib
 opencv_core245.lib
 opencv_features2d245.lib
