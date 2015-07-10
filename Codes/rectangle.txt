@@ -1,0 +1,61 @@
+/* Primitive "click and drag mouse to create rectangle" program. Doesn't display the rectangle until you are done dragging and release the mouse button.
+*/
+
+#include "stdafx.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+struct pnt{
+	int x;
+	int y;
+};
+struct pnt ul, ur, bl, br;
+int holding = 0,imgchanged=0;
+void cvsumitmouse(int event, int x, int y, int flags, void* param)
+{
+	if (event == CV_EVENT_LBUTTONDOWN)
+	{
+		ul.x=x;
+		ul.y = y;
+		holding = 1;
+	}
+	if (event == CV_EVENT_LBUTTONUP)
+	{
+		br.x = x;
+		br.y = y;
+		if (holding == 1)
+		{
+			holding = 0;
+			cvRectangle(param, cvPoint(ul.x, ul.y), cvPoint(br.x, br.y), cvScalar(0x00, 0xff, 0x00));
+			imgchanged = 1;
+		}
+	}
+
+
+}
+
+
+int main(int argc, char** argv) {
+	cvNamedWindow("Test");
+	IplImage *frame = cvLoadImage("12.jpg");
+	cvShowImage("Test", frame);
+	cvSetMouseCallback("Test", cvsumitmouse, frame);
+	while (1)
+	{
+		if (imgchanged == 1){
+			cvShowImage("Test", frame);
+			imgchanged = 0;
+		}
+		cvWaitKey(1);
+	}
+	
+		cvDestroyWindow("Test");
+	cvReleaseImage(&frame);
+	
+	
+}

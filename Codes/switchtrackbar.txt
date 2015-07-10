@@ -1,0 +1,42 @@
+// Trackbar used as a switch
+//
+
+#include "stdafx.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+CvCapture *capture;
+int image;
+void xyz(int pos)
+{
+
+image = pos;
+	
+}
+int currentpos = 0;
+
+int main(int argc, char** argv) {
+	cvNamedWindow("Test");
+	IplImage *capture;
+	
+
+	cvCreateTrackbar("position", "Test", &currentpos, 1, xyz);
+	while (1)
+	{
+		if (image == 0)
+		{
+			capture = cvLoadImage("12.jpg");
+		}
+		else
+		{
+			capture = cvLoadImage("phoneraju.jpg");
+		}
+		cvShowImage("Test", capture);
+		char c = cvWaitKey(33);
+		if (c == 27) break;
+	}
+}

@@ -1,0 +1,34 @@
+// Plays video from "dil.avi", shows progress in a trackbar.
+//
+
+#include "stdafx.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+CvCapture *capture;
+void xyz(int pos)
+{
+	cvSetCaptureProperty(capture, CV_CAP_PROP_POS_FRAMES, pos);
+}
+int currentpos = 0;
+
+int main(int argc, char** argv) {
+	cvNamedWindow("Test");
+	capture = cvCreateFileCapture("dil.avi");
+	IplImage *frame;
+	int frames = cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_COUNT);
+	cvCreateTrackbar("position", "Test", &currentpos, frames, xyz);
+	while (1)
+	{
+		frame = cvQueryFrame(capture);
+		if (!frame)break;
+		cvShowImage("Test", frame);
+		cvSetTrackbarPos("position", "Test", ++currentpos);
+		char c = cvWaitKey(33);
+		if (c == 27) break;
+	}
+}

@@ -1,0 +1,48 @@
+#include "stdafx.h"
+#include <iostream>
+
+
+
+#include "opencv2/highgui/highgui.hpp"
+
+#include "opencv2/imgproc/imgproc_c.h"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2\core\core.hpp"
+
+#include "opencv\cvaux.h"
+#include "stdlib.h"
+
+using namespace cv;
+using namespace std;
+
+
+
+int main(int argc, char** argv)
+{
+	cvNamedWindow("Controls");
+	IplImage *orig = cvLoadImage("bottle.jpg");
+	IplImage *dst = cvCreateImage(cvGetSize(orig), IPL_DEPTH_8U, 3);
+	IplImage *dst2 = cvCreateImage(cvGetSize(orig), IPL_DEPTH_8U, 1);
+
+	int Hlo = 0, Hhi = 240, Slo = 0, Shi = 240, Vlo = 0, Vhi = 240;
+	cvCreateTrackbar("H-low", "Controls", &Hlo, 255);
+	cvCreateTrackbar("H-hi", "Controls", &Hhi, 255);
+	cvCreateTrackbar("S-low", "Controls", &Slo, 255);
+	cvCreateTrackbar("S-hi", "Controls", &Shi, 255);
+	cvCreateTrackbar("V-low", "Controls", &Vlo, 255);
+	cvCreateTrackbar("V-hi", "Controls", &Vhi, 255);
+	
+	//cvCopyImage(orig, dst);
+	while (1)
+	{
+	cvCvtColor(orig, dst, CV_RGB2HSV);
+	cvInRangeS(dst, cvScalar(Hlo, Slo, Vlo), cvScalar(Hhi, Shi, Vhi), dst2);
+//		cvCvtColor(dst, dst2, CV_HSV2BGR);
+
+		cvShowImage("orig", orig);
+		cvShowImage("mod", dst2);
+		cvShowImage("Controls", NULL);
+		char c=cvWaitKey(33);
+		if (c == 28) break;
+	}
+	}

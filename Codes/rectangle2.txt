@@ -1,0 +1,89 @@
+/* An improvement of the "click and drag mouse to create rectangle" program. Now displays the new rectangle while mouse button is held down.
+*/
+
+#include "stdafx.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+struct pnt{
+	int x;
+	int y;
+};
+struct pnt ul, br;
+int holding = 0,imgchanged=0;
+IplImage* curr, *frame;
+void cvsumitmouse(int event, int x, int y, int flags, void* param)
+{
+	if (event == CV_EVENT_LBUTTONDOWN)
+	{
+		ul.x=x;
+		ul.y = y;
+		holding = 1;
+		
+	}
+	else if (event == CV_EVENT_LBUTTONUP)
+	{
+		br.x = x;
+		br.y = y;
+		if (holding == 1)
+		{
+			holding = 0;
+			cvRectangle(param, cvPoint(ul.x, ul.y), cvPoint(br.x, br.y), cvScalar(0x00, 0xff, 0x00));
+			imgchanged = 1;
+			
+		}
+	}
+	else if (event == CV_EVENT_MOUSEMOVE)
+	{
+		br.x = x;
+		br.y = y;
+		if (holding == 1)
+		{
+			
+			
+			imgchanged = 1;
+		}
+	}
+
+}
+
+
+int main(int argc, char** argv) {
+	cvNamedWindow("Test");
+	frame = cvLoadImage("12.jpg");
+
+	curr = cvCloneImage(frame);
+	cvShowImage("Test", frame);
+	cvSetMouseCallback("Test", cvsumitmouse, curr);
+	while (1)
+	{
+		if (imgchanged == 1){
+			if (holding == 0)
+			{
+				cvCopy(curr, frame);
+				
+				cvShowImage("Test", frame);
+				imgchanged = 0;
+			}
+			else
+			{
+				curr = cvCloneImage(frame);
+				//cvCopy(frame, curr);
+				cvRectangle(curr, cvPoint(ul.x, ul.y), cvPoint(br.x, br.y), cvScalar(0x00, 0xff, 0x00));
+				cvShowImage("Test", curr);
+				imgchanged = 0;
+			}
+		}
+		cvWaitKey(1);
+	}
+	
+		cvDestroyWindow("Test");
+	cvReleaseImage(&frame);
+	
+	
+}

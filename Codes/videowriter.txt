@@ -1,0 +1,40 @@
+// Captures from camera, writes to "out.avi". Stops when you press Escape.
+
+#include "stdafx.h"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/opencv.hpp"
+
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv) {
+	cvNamedWindow("Test");
+	
+	CvCapture *capture = cvCreateCameraCapture(0);
+	CvVideoWriter *writer;
+	assert(capture != NULL);
+	IplImage *frame;
+	CvSize size = cvSize(
+		(int)cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH),
+		(int)cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT)
+		);
+	writer = cvCreateVideoWriter("out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 30, size);
+	while (1)
+	{
+		frame = cvQueryFrame(capture);
+		
+		if (!frame) break;
+		
+		cvShowImage("Test", frame);
+
+		char c = cvWaitKey(33);
+		if (c == 27)break;
+	}
+	cvReleaseVideoWriter(&writer);
+	cvReleaseImage(&frame);
+	cvReleaseCapture(&capture);
+	
+	cvDestroyWindow("Test");
+}

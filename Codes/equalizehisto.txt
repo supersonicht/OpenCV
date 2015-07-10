@@ -1,0 +1,36 @@
+#include "stdafx.h"
+#include <iostream>
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include "opencv2/highgui/highgui.hpp"
+
+#include "opencv2/imgproc/imgproc_c.h"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2\core\core.hpp"
+
+#include "opencv\cvaux.h"
+#include "stdlib.h"
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv)
+{
+	IplImage *orig = cvLoadImage("bottle.jpg");
+	IplImage *dst = cvCreateImage(cvGetSize(orig), 8, 3);
+	cvCvtColor(orig, dst, CV_BGR2HSV);
+	IplImage *h = cvCreateImage(cvGetSize(orig), 8, 1);
+	IplImage *s = cvCreateImage(cvGetSize(orig), 8, 1);
+	IplImage *v = cvCreateImage(cvGetSize(orig), 8, 1);
+	cvSplit(dst, h, s, v,NULL);
+	//cvEqualizeHist(h, h);
+	//cvEqualizeHist(s, s);
+	cvEqualizeHist(v, v);
+	cvMerge(h, s, v, NULL, dst);
+	cvCvtColor(dst, dst, CV_HSV2BGR);
+	//cvSaveImage("bottle_edited.jpg", dst);
+	cvShowImage("orig", orig);
+	cvShowImage("mod", dst);
+	cvWaitKey(0);
+}
